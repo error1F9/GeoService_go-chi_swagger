@@ -1,0 +1,115 @@
+basePath: /
+definitions:
+  main.Address:
+    properties:
+      city:
+        type: string
+      house:
+        type: string
+      lat:
+        type: string
+      lon:
+        type: string
+      street:
+        type: string
+    type: object
+  main.GeocodeRequest:
+    properties:
+      lat:
+        example: "55.878"
+        type: string
+      lng:
+        example: "37.653"
+        type: string
+    type: object
+  main.GeocodeResponse:
+    properties:
+      addresses:
+        items:
+          $ref: '#/definitions/main.Address'
+        type: array
+    type: object
+  main.SearchRequest:
+    properties:
+      query:
+        example: мск сухонска 11/-89
+        type: string
+    type: object
+  main.SearchResponse:
+    properties:
+      addresses:
+        items:
+          $ref: '#/definitions/main.Address'
+        type: array
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: This is a sample server Petstore server.
+  termsOfService: http://swagger.io/terms/
+  title: Geoservice
+  version: "1.0"
+paths:
+  /address/search:
+    post:
+      consumes:
+      - application/json
+      description: Receive Information by Address
+      operationId: addSearch
+      parameters:
+      - description: Receive information by Address
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/main.SearchRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/main.SearchResponse'
+        "400":
+          description: Empty Query
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: receive Information by Address
+      tags:
+      - AddressSearch
+  /api/address/geocode:
+    post:
+      consumes:
+      - application/json
+      description: Request structure for geocoding addresses
+      operationId: geo
+      parameters:
+      - description: Handle Address by GeoCode
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/main.GeocodeRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/main.GeocodeResponse'
+        "400":
+          description: Empty Query
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: receive Address by GeoCode
+      tags:
+      - GeoCode
+swagger: "2.0"
